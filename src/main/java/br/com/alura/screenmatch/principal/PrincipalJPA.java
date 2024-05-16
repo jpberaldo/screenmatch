@@ -34,6 +34,7 @@ public class PrincipalJPA {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Listar séries buscadas
+                    4 - Buscar por titulo
                                         
                                     
                     0 - Sair                                 
@@ -53,6 +54,8 @@ public class PrincipalJPA {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriePorTitulo();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -103,6 +106,20 @@ public class PrincipalJPA {
             serieEncontrada.setEpisodios(episodios);
             repositorio.save(serieEncontrada);
 
+        } else {
+            System.out.println("Serie nao encontrada");
+        }
+    }
+
+    private void buscarSeriePorTitulo() {
+
+        System.out.println("Escolha uma serie, pelo Titulo: ");
+        String nomeSerie = leitura.nextLine();
+
+        Optional<Serie> optionalSerie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+
+        if (optionalSerie.isPresent()) {
+            System.out.println("Dados da serie pesquisada pelo titulo: " + optionalSerie.get());
         } else {
             System.out.println("Serie nao encontrada");
         }
