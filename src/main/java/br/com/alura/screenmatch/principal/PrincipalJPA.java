@@ -35,6 +35,7 @@ public class PrincipalJPA {
                     2 - Buscar episódios
                     3 - Listar séries buscadas
                     4 - Buscar por titulo
+                    5 - Buscar por Ator
                                         
                                     
                     0 - Sair                                 
@@ -56,6 +57,8 @@ public class PrincipalJPA {
                     break;
                 case 4:
                     buscarSeriePorTitulo();
+                case 5:
+                    buscarSeriePorAtor();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -64,7 +67,6 @@ public class PrincipalJPA {
             }
         }
     }
-
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -130,6 +132,20 @@ public class PrincipalJPA {
         series = repositorio.findAll();
         series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
 
+    }
+
+    private void buscarSeriePorAtor() {
+
+        System.out.println("Escolha um Ator: ");
+        String nomeAtor = leitura.nextLine();
+
+        List<Serie> atoresEncontrados = repositorio.findByAtoresContainingIgnoreCase(nomeAtor);
+
+        if (!atoresEncontrados.isEmpty()) {
+            atoresEncontrados.forEach(System.out::println);
+        } else {
+            System.out.println("Ator nao encontrado");
+        }
     }
 
 }
