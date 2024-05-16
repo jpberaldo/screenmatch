@@ -85,11 +85,11 @@ public class PrincipalJPA {
     private void buscarEpisodioPorSerie() {
 
         listarSeriesBuscadas();
-        System.out.println("Escolha uma serie, pelo nome: ");
+        System.out.println("Escolha uma serie pelo nome: ");
         String nomeSerie = leitura.nextLine();
 
 
-        Optional<Serie> first = series.stream().filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
+        Optional<Serie> first = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
         if (first.isPresent()) {
 
             var serieEncontrada = first.get();
@@ -113,7 +113,7 @@ public class PrincipalJPA {
 
     private void buscarSeriePorTitulo() {
 
-        System.out.println("Escolha uma serie, pelo Titulo: ");
+        System.out.println("Escolha uma serie pelo Titulo: ");
         String nomeSerie = leitura.nextLine();
 
         Optional<Serie> optionalSerie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
