@@ -36,6 +36,7 @@ public class PrincipalJPA {
                     3 - Listar séries buscadas
                     4 - Buscar por titulo
                     5 - Buscar por Ator
+                    6 - Listar top 5 séries
                                         
                                     
                     0 - Sair                                 
@@ -59,6 +60,8 @@ public class PrincipalJPA {
                     buscarSeriePorTitulo();
                 case 5:
                     buscarSeriePorAtor();
+                case 6:
+                    listarTopCincoSeries();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -146,6 +149,11 @@ public class PrincipalJPA {
         } else {
             System.out.println("Ator nao encontrado");
         }
+    }
+
+    private void listarTopCincoSeries() {
+        List<Serie> seriesTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
+        seriesTop.forEach(s -> System.out.println(s.getTitulo() + " | avaliacao: " + s.getAvaliacao()));
     }
 
 }
