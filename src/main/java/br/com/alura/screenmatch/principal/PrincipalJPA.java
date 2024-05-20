@@ -35,6 +35,7 @@ public class PrincipalJPA {
                     5 - Buscar por Ator
                     6 - Listar top 5 séries
                     7 - Buscar series por categoria
+                    8 - Buscar por numero maximo de temporadas e avaliação minima
                                         
                                     
                     0 - Sair                                 
@@ -66,6 +67,9 @@ public class PrincipalJPA {
                 case 7:
                     buscarSeriePorCategoria();
                     break;
+                case 8:
+                    buscarTemporadaMaximaEAvaliacaoMinima();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -74,7 +78,6 @@ public class PrincipalJPA {
             }
         }
     }
-
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -170,7 +173,21 @@ public class PrincipalJPA {
         System.out.println("Series da categoria: " + nomeGenero);
         listaCategoria.forEach(System.out::println);
 
-
     }
+
+    private void buscarTemporadaMaximaEAvaliacaoMinima() {
+
+        System.out.println("Quantas temporadas no máximo vc deseja que tenha a serie?");
+        Integer var1 = leitura.nextInt();
+        leitura.nextLine();
+
+        System.out.println("Qual a media minima de avaliacao, tem que ter a serie?");
+        Double var2 = leitura.nextDouble();
+
+        List<Serie> lista = repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(var1, var2);
+        System.out.println("Series filtradas");
+        lista.forEach(s -> System.out.println(s.getTitulo() + "  - avaliação: " + s.getAvaliacao()));
+    }
+
 
 }
