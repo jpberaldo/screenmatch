@@ -178,16 +178,16 @@ public class PrincipalJPA {
     private void buscarTemporadaMaximaEAvaliacaoMinima() {
 
         System.out.println("Quantas temporadas no máximo vc deseja que tenha a serie?");
-        Integer var1 = leitura.nextInt();
+        var totalTemporadas = leitura.nextInt();
         leitura.nextLine();
 
         System.out.println("Qual a media minima de avaliacao, tem que ter a serie?");
-        Double var2 = leitura.nextDouble();
+        var avaliacao = leitura.nextDouble();
+        leitura.nextLine();
 
-        List<Serie> lista = repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(var1, var2);
+        List<Serie> lista = repositorio.filtrarPorTemporadasEAvaliacao(totalTemporadas, avaliacao);
         System.out.println("Series filtradas");
         lista.forEach(s -> System.out.println(s.getTitulo() + "  - avaliação: " + s.getAvaliacao()));
     }
-
 
 }
