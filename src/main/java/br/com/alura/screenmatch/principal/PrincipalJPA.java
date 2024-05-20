@@ -36,7 +36,7 @@ public class PrincipalJPA {
                     6 - Listar top 5 séries
                     7 - Buscar series por categoria
                     8 - Buscar por numero maximo de temporadas e avaliação minima
-                                        
+                    9 - Buscar episodios por trecho    
                                     
                     0 - Sair                                 
                     """;
@@ -70,6 +70,9 @@ public class PrincipalJPA {
                 case 8:
                     buscarTemporadaMaximaEAvaliacaoMinima();
                     break;
+                case 9:
+                    buscarEpisodioPorTrecho();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -78,6 +81,7 @@ public class PrincipalJPA {
             }
         }
     }
+
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -188,6 +192,16 @@ public class PrincipalJPA {
         List<Serie> lista = repositorio.filtrarPorTemporadasEAvaliacao(totalTemporadas, avaliacao);
         System.out.println("Series filtradas");
         lista.forEach(s -> System.out.println(s.getTitulo() + "  - avaliação: " + s.getAvaliacao()));
+    }
+
+    private void buscarEpisodioPorTrecho() {
+
+        System.out.println("Digite alguma parte de algum episodio");
+        var buscarTrechoDeEpisodio = leitura.nextLine();
+
+        List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(buscarTrechoDeEpisodio);
+        episodiosEncontrados.forEach(e -> System.out.println("Nome da Serie:" + e.getSerie().getTitulo() + " |Temporada:" + e.getTemporada() + " |Nome do episodio: " + e.getTitulo()));
+
     }
 
 }
