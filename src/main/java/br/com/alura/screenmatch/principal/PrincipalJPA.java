@@ -39,6 +39,7 @@ public class PrincipalJPA {
                     8 - Buscar por numero maximo de temporadas e avaliação minima
                     9 - Buscar episodios por trecho   
                     10 - Listar top 5 episodios de uma série
+                    11 - Buscar episodios por um ano especifico
                      
                                     
                     0 - Sair                                 
@@ -79,6 +80,8 @@ public class PrincipalJPA {
                 case 10:
                     listarTopEpisodios();
                     break;
+                case 11:
+                    buscarEpisodioPorAno();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -221,6 +224,23 @@ public class PrincipalJPA {
                     " - Episódio: " + e.getTitulo()));
         }
 
+    }
+
+    private void buscarEpisodioPorAno() {
+
+        buscarSeriePorTitulo();
+        if (serieBusca.isPresent()) {
+
+            Serie serie = serieBusca.get();
+            System.out.println("Digite o ano");
+            int anoLancamento = leitura.nextInt();
+            leitura.nextLine();
+
+            List<Episodio> episodiosAno = repositorio.episodiosPorSerieEAno(serie, anoLancamento);
+            episodiosAno.forEach(e -> System.out.println("Série: " + e.getSerie().getTitulo() + " - Ano de Lançamento: " + e.getDataLancamento() +
+                    " - Temporada: " + e.getTemporada() + " - Numero Episodio: " + e.getNumeroEpisodio() + " - Avaliação: " + e.getAvaliacao() +
+                    " - Episódio: " + e.getTitulo()));
+        }
     }
 
 }
