@@ -18,6 +18,7 @@ public class PrincipalJPA {
     private List<DadosSerie> dadosSerie = new ArrayList<>();
     private SerieRepository repositorio;
     private List<Serie> series = new ArrayList<>();
+    private Optional<Serie> serieBusca;
 
     public PrincipalJPA(SerieRepository repositorio) {
         this.repositorio = repositorio;
@@ -36,7 +37,9 @@ public class PrincipalJPA {
                     6 - Listar top 5 séries
                     7 - Buscar series por categoria
                     8 - Buscar por numero maximo de temporadas e avaliação minima
-                    9 - Buscar episodios por trecho    
+                    9 - Buscar episodios por trecho   
+                    10 - Listar top 5 episodios de uma série
+                     
                                     
                     0 - Sair                                 
                     """;
@@ -73,6 +76,9 @@ public class PrincipalJPA {
                 case 9:
                     buscarEpisodioPorTrecho();
                     break;
+                case 10:
+                    listarTopEpisodios();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -81,7 +87,6 @@ public class PrincipalJPA {
             }
         }
     }
-
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -133,10 +138,10 @@ public class PrincipalJPA {
         System.out.println("Escolha uma serie pelo Titulo: ");
         String nomeSerie = leitura.nextLine();
 
-        Optional<Serie> optionalSerie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+        serieBusca = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
-        if (optionalSerie.isPresent()) {
-            System.out.println("Dados da serie pesquisada pelo titulo: " + optionalSerie.get());
+        if (serieBusca.isPresent()) {
+            System.out.println("Dados da serie pesquisada pelo titulo: " + serieBusca.get());
         } else {
             System.out.println("Serie nao encontrada");
         }
@@ -201,6 +206,20 @@ public class PrincipalJPA {
 
         List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(buscarTrechoDeEpisodio);
         episodiosEncontrados.forEach(e -> System.out.println("Nome da Serie:" + e.getSerie().getTitulo() + " |Temporada:" + e.getTemporada() + " |Nome do episodio: " + e.getTitulo()));
+
+    }
+
+    private void listarTopEpisodios() {
+
+        buscarSeriePorTitulo();
+        if (serieBusca.isPresent()) {
+
+            Serie serie = serieBusca.get();
+            List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(serie);
+            topEpisodios.forEach(e -> System.out.println("Série: " + e.getSerie().getTitulo() +
+                    " - Temporada: " + e.getTemporada() + " - Numero Episodio: " + e.getNumeroEpisodio() + " - Avaliação: " + e.getAvaliacao() +
+                    " - Episódio: " + e.getTitulo()));
+        }
 
     }
 
