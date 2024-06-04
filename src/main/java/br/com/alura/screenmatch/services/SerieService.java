@@ -69,6 +69,15 @@ public class SerieService {
         return converteDados(repositorio.findByGenero(categoria));
     }
 
+    public List<EpisodioDTO> obterTopEpisodios(Long id) {
+
+        Serie serie = repositorio.findById(id).get();
+        return repositorio.topEpisodiosPorSerie(serie)
+                .stream().map(episodio -> new EpisodioDTO(episodio.getTemporada(), episodio.getTitulo(), episodio.getNumeroEpisodio()))
+                .collect(Collectors.toList());
+
+    }
+
     private List<SerieDTO> converteDados(List<Serie> series) {
         return series.stream()
                 .map(s -> new SerieDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(),
