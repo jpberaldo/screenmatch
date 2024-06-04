@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.services;
 
+import br.com.alura.screenmatch.dto.EpisodioDTO;
 import br.com.alura.screenmatch.dto.SerieDTO;
 import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.repository.SerieRepository;
@@ -42,10 +43,27 @@ public class SerieService {
         }
     }
 
+    public List<EpisodioDTO> buscarTodasAsTemporadas(Long id) {
+
+        Optional<Serie> serie = repositorio.findById(id);
+        if (serie.isPresent()) {
+
+            Serie s = serie.get();
+            return s.getEpisodios().stream().map(episodio -> new EpisodioDTO(episodio.getTemporada(), episodio.getTitulo(), episodio.getNumeroEpisodio()))
+                    .collect(Collectors.toList());
+
+        } else {
+            return null;
+        }
+
+
+    }
+
     private List<SerieDTO> converteDados(List<Serie> series) {
         return series.stream()
                 .map(s -> new SerieDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(),
                         s.getPoster(), s.getSinopse())).collect(Collectors.toList());
     }
+
 
 }
